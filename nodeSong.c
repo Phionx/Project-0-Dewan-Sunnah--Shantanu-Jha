@@ -33,14 +33,14 @@ char* getArtist(song_node *n){
 }
 
 song_node* insert_front( song_node *n, char* song, char* singer) {
+	song_node *new;
+	new = (struct song_node *)malloc(sizeof(struct song_node));
+	new->next = n;
 
- song_node *new;
+	strcpy(new->name, song);
+	strcpy(new->artist, singer);
 
-  new->next = n;
-  strcpy(new->name, song);
-  strcpy(new->artist, singer);
-
-  return new;
+	return new;
 }
 
 song_node* free_list( song_node *n ) {
@@ -57,9 +57,11 @@ song_node* free_list( song_node *n ) {
 
 int main(){
   song_node *a;
+  a= (struct song_node *)malloc(sizeof(struct song_node));
+  
   strcpy(a->name, "You say run");
   strcpy(a->artist, "bnha");
-  a->next=0;
+  a->next=NULL;
   print_list(a);
   return 0;
   
