@@ -1,0 +1,46 @@
+
+
+typedef struct song_node{ 
+  char name[256];
+  char artist[256];
+  struct song_node *next;
+} song_node;
+
+song_node *table[26];
+
+int  findLetter(char c){
+    int i;
+    for (i=0; i<26; i++){
+if(or thing that works like if) (strncmp(table[i]->name, c, 1)
+    return table[i]->name[0];
+}
+        
+
+void addSong(song_node s){
+song_node *node=table[findletter(s->name[0])];
+while (node){
+    if (strcmp(node->name,s->name)==1)
+        insert_front(*node, s);
+    node=node->next;
+}
+
+void printByLetter(char x){
+    song_node *node=table[findletter(s->name[0])];
+print_list;
+}
+    
+void printAll(){
+    int i;
+    for (i=0; i<26; i++)
+        print_list(table[i]);
+}
+
+song_node DeleteSong(song_node s){
+    song_node *node=table[findletter(s->name[0])];
+while (node){
+    if (strcmp(node->next->name,s->name)==0){
+        song_node *ans=node->next;
+        node->next=node->next->next;
+        }
+    node=node->next;
+ans->next=0; return ans;
