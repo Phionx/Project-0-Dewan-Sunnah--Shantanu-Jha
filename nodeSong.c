@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
 #include "nodeSong.h"
 
 void print_node (song_node *n) {
@@ -81,7 +83,7 @@ song_node* new_song( song_node *n, char* song, char* singer) {
 }
 
 
-song_node *search_artist(song_node *n, char *singer){
+song_node *search_singer(song_node *n, char *singer){
 	song_node *temp = n;
 	while (temp) {
 		if (temp->artist == singer) return temp;

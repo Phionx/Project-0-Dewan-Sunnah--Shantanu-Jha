@@ -23,15 +23,14 @@ song_node* free_list( song_node *n );
 song_node* new_song( song_node *n , char* song, char* singer);
 
 song_node* insert_order(song_node *n, char* song, char* singer);
-song_node *search_artist(song_node *n, char *singer);
+song_node *search_singer(song_node *n, char *singer);
 
 
 song_node *search_name(song_node *n, char *song);
 
-int len(song_node *n);
 
 song_node *random_song(song_node *n);
 
-
-song_node * remove_song(song_node *n, char *singer, char *song) {
+int len(song_node *n);
+song_node * remove_song(song_node *n, char *singer, char *song);
 #endif

@@ -10,18 +10,25 @@ Project 0
 
 
 
-void add_song(char* artist, char* name);
-void delete_song(char *artist, char *name);
+
+
+
+
+void add_song(char *song, char *singer);
+void delete_song(char *song, char *singer);
+
 void delete_all();
 
-song_node *search_song(char *artist, char* name);
-song_node *search_artist(char* artist);
+song_node *search_song(char* song);
 
-void print_song(char *artist, char *name);
-void print_artist(char *artist);
-void print_letter(char c);
-void print_library();
+song_node *search_artist(char* singer);
+
+void print_letter_songs(char letter);
+
+void print_artist_songs(char *singer);
+void print_playlist();
 
 void shuffle(int i);
+
 
 #endif
