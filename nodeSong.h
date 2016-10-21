@@ -8,6 +8,8 @@ typedef struct song_node{
 } song_node;
 
 
+
+void print_node (song_node *n);
 void print_list( song_node *n );
 
 
