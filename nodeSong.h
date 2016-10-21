@@ -31,4 +31,7 @@ song_node *search_name(song_node *n, char *song);
 int len(song_node *n);
 
 song_node *random_song(song_node *n);
+
+
+song_node * remove_song(song_node *n, char *singer, char *song) {
 #endif

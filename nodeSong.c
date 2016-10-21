@@ -61,8 +61,7 @@ song_node* insert_order(song_node *n, char* song, char* singer) {
 	
 
 
-song_node* free_list( song_node *n ) {
-  
+song_node* free_list( song_node *n ) { 
   song_node *f = n;
   while ( n ) {
     n = n->next;
@@ -113,24 +112,21 @@ song_node *random_song(song_node *n){
 	for(random = rand()%length;random;random--, n=n->next);
 	return n;
 }
-int main(){
-  song_node *a;
-  a= new_song(a, "You say run", "bnha");
-  a = insert_order(a, "Blackbird", "Beatles");
-  
-  a = insert_order(a, "a", "as");
-  a = insert_order(a, "b", "ab");
-  a = insert_order(a, "c", "at");
-  a = insert_order(a, "d", "bd");
-  print_list(a);
-  print_list(random_song(a));
 
-	  /*
+song_node * remove_song(song_node *n, char *singer, char *song) {
+  if (strcmp(song, n->name) == 0 && strcmp(singer, n->artist) == 0)
+    return n->next;
   
-  a = insert_order(a, "Test", "Beatles");
-  print_list(a);
-  return 0;
-  */
-
-  
+  song_node *ret = n; 
+  while (n->next) {
+    if (strcmp(song, (n->next)->name) == 0 && 
+	strcmp(singer, (n->next)->artist) == 0) {
+      n->next = (n->next)->next;
+      return ret;
+    }
+    else
+      n=n->next;
+  }
+  return ret;
 }
+
