@@ -5,75 +5,8 @@
 
 #include "nodeSong.h"
 
-void print_node (song_node *n) {
-	if (n) {
-    printf("Name: %s\t\tArtist: %s\n",n->name, n->artist);
-	}
-}
 
-void print_list( song_node *n ) {
-
-  if(n) {
-    print_node(n);
-	print_list(n->next);
-	n = n->next;
-  }
-}
-
-song_node* getNext(song_node *n){
-  return  n->next;
-}
-
-char* getSong(song_node *n){
-  return n->name;
-}
-
-char* getArtist(song_node *n){
-  return n->artist;
-}
-
-song_node* insert_front( song_node *n, char* song, char* singer) {
-	song_node *new = (struct song_node *)malloc(sizeof(struct song_node));
-	new->next = n;
-	strcpy(new->name, song);
-	strcpy(new->artist, singer);
-	return new;
-}
-
-song_node* insert_order(song_node *n, char* song, char* singer) {
-	song_node *behind = n;
-	song_node *temp = n;
-
-	if (!n){ n = insert_front(n, song, singer); return n;} //NULL empty linked list
-	if (strcmp(n->artist, singer) > 0) {
-		n = insert_front(n, song, singer);
-		return n;
-	}
-
-	while (temp && strcmp(temp->artist, singer) <= 0) temp = temp->next;
-	while (temp && strcmp(temp->name, song) <=0 && strcmp(temp->artist, singer) == 0) temp = temp->next;
-
-	while (behind->next!=temp) behind=behind->next;
-	
-	behind->next=insert_front(temp,song,singer);
-	return n;
-}
-
-
-	
-
-
-song_node* free_list( song_node *n ) { 
-  song_node *f = n;
-  while ( n ) {
-    n = n->next;
-    printf("freeing song_node %s", f->name );
-    free(f);
-    f = n;    
-  }
-  return n;
-}
-
+//CREATING NEW SONG NODE ===================================================================
 song_node* new_song( song_node *n, char* song, char* singer) {
 	song_node *temp = (struct song_node *)malloc(sizeof(struct song_node));
 	strcpy(temp->name, song);
@@ -83,52 +16,155 @@ song_node* new_song( song_node *n, char* song, char* singer) {
 }
 
 
-song_node *search_singer(song_node *n, char *singer){
-	song_node *temp = n;
-	while (temp) {
-		if (temp->artist == singer) return temp;
-		temp = temp->next;
+//PRINTING ==================================================================================
+void print_node (song_node *n) {
+	if (n) {
+    printf("\n\tARTIST: %s\t\tSONG: %s",n->artist, n->name);
 	}
-	return 0;
+}
+
+void print_list( song_node *n ) {
+  printf("\nSTART========================================================-\\");
+  if(!n) printf("\n\tNO SONGS");
+  while(n) {
+    print_node(n);
+	n = n->next;
+  }
+  printf("\nEND==========================================================-/\n");
 }
 
 
-song_node *search_name(song_node *n, char *song){
-	song_node *temp = n;
-	while (temp) {
-		if (temp->name == song) return temp;
-		temp = temp->next;
-	}
-	return 0;
+//GET FUNCTIONS ============================================================================
+song_node* getNext(song_node *n){
+  return  n->next;
 }
+
+song_node* getSong(song_node *n, int i){
+	if (n) {int length = len(n); if (i < length) while (i) { n = n->next; i--;}}
+  return n;
+}
+
+char* getArtist(song_node *n){
+  return n->artist;
+}
+
 
 int len(song_node *n){
 	int length = 0;
 	while (n) {n=n->next;length++;}
 	return length;
 }
+//INSERT FUNCTIONS ==========================================================================
+song_node* insert_front( song_node *n, char* song, char* singer) {
+	song_node *new = (struct song_node *)malloc(sizeof(struct song_node));
+	new->next = n;
+	strcpy(new->name, song);
+	strcpy(new->artist, singer);
+	return new;
+}
 
-song_node *random_song(song_node *n){
-	int random;
-	int length = len(n);
-	for(random = rand()%length;random;random--, n=n->next);
+
+song_node* insert_order(song_node *n, char* song, char* singer) {
+	song_node *temp2 = n;
+	song_node *temp = n;
+
+	if (!n || strcmp(n->artist, singer) > 0 || (strcmp(n->artist, singer) == 0 && strcmp(n->name, song) > 0)) return insert_front(n, song, singer);
+
+	while (temp  && strcmp(temp->artist, singer) < 0) temp = temp->next;
+
+	while (temp && strcmp(temp->name, song) <= 0 && strcmp(temp->artist, singer) == 0) temp = temp->next;
+	while (temp2->next!=temp) temp2=temp2->next;
+
+	temp2->next=insert_front(temp,song,singer);
 	return n;
 }
 
-song_node * remove_song(song_node *n, char *singer, char *song) {
-  if (strcmp(song, n->name) == 0 && strcmp(singer, n->artist) == 0)
-    return n->next;
-  
-  song_node *ret = n; 
-  while (n->next) {
-    if (strcmp(song, (n->next)->name) == 0 && 
-	strcmp(singer, (n->next)->artist) == 0) {
-      n->next = (n->next)->next;
-      return ret;
-    }
-    else
-      n=n->next;
-  }
-  return ret;
+
+//FREEING SONG_NODE =========================================================================
+song_node* free_list( song_node *n ) { 
+	song_node *f = n;
+	while(n){
+		n=n->next;
+		printf("\nFREEING: ARTIST: %s\t\tSONG: %s", f->artist, f->name);
+		free(f);
+		f = n;
+	}
+	return n;
 }
+
+
+
+song_node * remove_song(song_node *n, char *song, char *singer) {
+	int length = len(n);
+	song_node *temp;
+	int i = 0;
+	for (;i<length;i++){
+		temp = getSong(n, i);
+		if(strstr(temp->name, song) && strstr(temp->artist, singer)) return remove_i(n,i);
+	}
+	return n;
+}
+
+song_node *remove_i(song_node *n, int i){
+	int length = len(n);
+	song_node *temp = n;
+	if (i < 0 || i > length - 1) return n;
+	if (!i) {
+		temp = n->next;
+		free(n);
+	} else {
+		while (i - 1) {
+			n = n->next;
+			i--;
+		}
+		song_node* temp2 = n->next->next;
+		free(n->next);
+		n->next = temp2;
+	}
+	return temp;
+}
+//SEARCH FUNCTIONS  ==========================================================================
+song_node *search_singer(song_node *n, char *singer){
+	while (n) {
+		if (strstr(n->artist, singer)) break;
+		n = n->next;
+	}
+	return n;
+}
+
+
+song_node *search_name(song_node *n, char *song){	
+	while (n) {
+		if (strstr(n->name, song)) break;
+		n = n->next;
+	}
+	return n;
+}
+
+
+song_node *random_song(song_node *n){
+	if (n){
+		int length = len(n);
+		int random = rand()%length;
+		int i = 0;
+		for (; i < random; i++) n = n->next;
+	}
+	return n;
+}
+
+/*
+int main(){
+	song_node *testing;
+	testing = new_song(testing, "aa", "bb");
+	print_list(testing);
+	testing = insert_order(testing, "dd", "bb");
+	print_list(testing);
+	testing = insert_order(testing, "cc", "bb");
+	print_list(testing);
+	testing = insert_order(testing, "bb", "cc");
+	print_list(testing);
+	printf("LENGTH: %d", len(testing));
+
+	return 0;
+}*/
 

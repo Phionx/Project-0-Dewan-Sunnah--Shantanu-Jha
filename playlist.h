@@ -1,5 +1,3 @@
-#ifndef _PLAYLIST_H
-#define _PLAYLIST_H
 #include "nodeSong.h"
 /*
 Dewan Sunnah & Shantanu Jha
@@ -11,24 +9,37 @@ Project 0
 
 
 
+struct playlist {
+	song_node *music;
+	song_node *songs[26];
+	song_node *shuffle;
+};
+
+typedef struct playlist playlist;
+
+//INIT MUSIC ===============================================================
+playlist *init_music();
 
 
-
-void add_song(char *song, char *singer);
-void delete_song(char *song, char *singer);
-
-void delete_all();
-
-song_node *search_song(char* song);
-
-song_node *search_artist(char* singer);
-
-void print_letter_songs(char letter);
-
-void print_artist_songs(char *singer);
-void print_playlist();
-
-void shuffle(int i);
+//SONG HANDELING ===========================================================
+playlist *add_song(playlist *tunes, char *song, char *singer);
+playlist *delete_song(playlist *tunes, char *song, char *singer);
+playlist *delete_all(playlist *tunes);
 
 
-#endif
+//SEARCH ===================================================================
+song_node *search_song(playlist *tunes, char* song);
+song_node *search_artist(playlist *tunes, char* singer);
+
+
+//PRINTING =================================================================
+void print_letter_songs(playlist *tunes, char letter);
+void print_artist_songs(playlist *tunes, char *singer);
+void print_playlist(playlist *tunes);
+
+
+//SHUFFLING ================================================================
+playlist *shuffle(playlist *tunes);
+
+
+int *randomShuffleSet(int *elements, int max);
